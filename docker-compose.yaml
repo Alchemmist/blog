@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  blog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./content:/app/content  # Для обновления контента без пересборки
+    restart: unless-stopped
+

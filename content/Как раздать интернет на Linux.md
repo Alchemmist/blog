@@ -5,6 +5,7 @@ type:
   - synopsis
 theme: linux
 status: finished
+title: Как раздать интернет в Linux
 taxonomies:
   tags:
     - linux

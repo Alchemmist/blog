@@ -1,0 +1,72 @@
+name: Deploy Blog
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH for server access
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: SSH into server and deploy blog
+        run: |
+          ssh -o StrictHostKeyChecking=no www@178.208.79.42 << 'EOF'
+          sudo su - << 'SUDO_EOF'
+
+            # Перейти в директорию с кодом проекта
+            cd /home/www/blog
+
+            git config --global --add safe.directory /home/www/blog
+
+            git switch main
+
+            git pull --rebase
+
+            # Сборка сайта с помощью Zola
+            zola build
+
+            # Копирование файлов на сервер
+            sudo cp -r public/* /var/www/html
+
+            # Генерация SSL сертификатов с помощью Certbot
+            sudo certbot --nginx --non-interactive --agree-tos --email anton.ingrish@gmail.com -d alchemical-blog.ru
+
+            # Конфигурация NGINX
+            echo 'server {
+                listen 80;
+                server_name alchemical-blog.ru;
+
+                root /home/www/blog/public;
+                index index.html;
+
+                # Основной обработчик запросов
+                location / {
+                    try_files \$uri \$uri/ /index.html;
+                }
+
+                # Обработка статических файлов
+                location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|otf)\$ {
+                    try_files \$uri =404;
+                    expires 30d;
+                    add_header Cache-Control "public, no-transform";
+                }
+            }' | sudo tee /etc/nginx/sites-available/alchemical-blog > /dev/null
+
+            # Включение конфигурации NGINX
+            sudo ln -s /etc/nginx/sites-available/alchemical-blog /etc/nginx/sites-enabled/
+
+            # Перезагрузка NGINX
+            sudo systemctl restart nginx
+          SUDO_EOF
+          EOF
+

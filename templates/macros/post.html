@@ -28,10 +28,11 @@
         {%- if page.date %}
             {{ page.date | date(format="%Y-%m-%d") }}
         {% endif -%}
-        {%- if page.time %}
+        {%- if page.time is defined and page.time %}
             {{ page.time | date(format="%H:%M:%S") }}
         {% endif -%}
     </span>
+    {{ __tera_context }}
 {% endmacro post_date %}
 
 
@@ -73,7 +74,6 @@
     <div class="post-meta-inline">
         {{ post_macros::date(page=page) }}
     </div>
-
     {{ post_macros::tags(page=page) }}
 {% endmacro header %}
 
@@ -86,7 +86,7 @@
         {% endif -%}
         <li class="post-list">
             <a href="{{ page.permalink | safe }}">
-                <span class="post-date">{{ page.date }}</span>
+            <span class="post-date">{{ page.date }}</span>
                 :: <span class="post-list-title">{{ page.title }}</span></a>
             {{ post_macros::tags(page=page, short=true) }}
         </li>

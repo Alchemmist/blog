@@ -1,14 +1,17 @@
 ---
 date: 2024-12-29
-time: 16:31
-type:
-  - synopsis
-theme: linux
-status: finished
+extra:
+  - time: 16:31
+  - type:
+    - synopsis
+  - theme: linux
+  - status: finished
 title: Как раздать интернет в Linux
 taxonomies:
   tags:
     - linux
+  test:
+    - time: 12:40
 ---
 # Как раздать интернет на Linux
 Чтобы раздать интернет с модема с помощью `nm-connection-editor` в графическом интерфейсе на Arch Linux, вам нужно настроить точку доступа через Wi-Fi. Вот пошаговая инструкция:

@@ -1,11 +1,10 @@
 ---
 date: 2024-12-29
-extra:
-  - time: 16:31
-  - type:
-    - synopsis
-  - theme: linux
-  - status: finished
+time: 16:31
+type:
+  - synopsis
+theme: linux
+status: finished
 title: Как раздать интернет в Linux
 taxonomies:
   tags:

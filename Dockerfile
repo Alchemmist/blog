@@ -13,18 +13,22 @@ COPY . /app
 # Сборка сайта с помощью Zola
 RUN zola build
 
-# Финальный образ
+# Финальный образ с Nginx и Certbot
 FROM nginx:alpine
 
-# Копируем собранные файлы в директорию nginx
+# Установка Certbot для получения сертификатов
+RUN apk add --no-cache certbot certbot-nginx bash
+
+# Копируем собранные файлы из предыдущего этапа
 COPY --from=builder /app/public /var/www/html
 
 # Копируем конфигурацию nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Открываем порт для NGINX
-EXPOSE 80
+# Открываем порты для Nginx и Certbot
+EXPOSE 80 443
 
-# Запуск NGINX
-CMD ["nginx", "-g", "daemon off;"]
+# Запуск Certbot и Nginx
+CMD ["sh", "-c", "certbot --nginx --non-interactive --agree-tos --email anton.ingrish@gmail.com -d alchemical-blog.ru && nginx -g 'daemon off;'"]
+
 

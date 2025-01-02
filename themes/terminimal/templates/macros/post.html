@@ -28,8 +28,12 @@
         {%- if page.date %}
             {{ page.date | date(format="%Y-%m-%d") }}
         {% endif -%}
+        {%- if page.time %}
+            {{ page.time | date(format="%H:%M:%S") }}
+        {% endif -%}
     </span>
 {% endmacro post_date %}
+
 
 
 {% macro earlier_later(page) %}

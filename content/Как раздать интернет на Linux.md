@@ -5,7 +5,7 @@ taxonomies:
     - linux
 extra:
   custom_props:
-    - time: 16:31
+    - time: "16:31"
     - type:
       - synopsis
     - theme: 

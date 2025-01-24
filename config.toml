@@ -47,7 +47,8 @@ menu_items = [
     {name = "portfolio", url = "$BASE_URL/portfolio"},
 
     # set newtab to true to make the link open in new tab
-    {name = "github", url = "https://github.com/pawroman/zola-theme-terminimal", newtab = true},
+    {name = "github", url = "https://github.com/Alchemmist", newtab = true},
+    {name = "telegram", url = "https://t.me/alchemmist", newtab = true},
 ]
 
 logo_text = "alchemical blog"
